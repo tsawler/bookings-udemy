@@ -2,6 +2,7 @@ package render
 
 import (
 	"bookings-udemy/pkg/config"
+	"bookings-udemy/pkg/models"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -20,7 +21,7 @@ func NewTemplates(a *config.AppConfig) {
 }
 
 // RenderTemplate renders a template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 
 	if app.UseCache {
@@ -37,7 +38,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	_ = t.Execute(buf, nil)
+	_ = t.Execute(buf, td)
 
 	_, err := buf.WriteTo(w)
 	if err != nil {
